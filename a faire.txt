@@ -1,0 +1,2 @@
+calculer automatiquement les mensualités
+Gérer la remise à 0 des dépenses pour le nouveau mois

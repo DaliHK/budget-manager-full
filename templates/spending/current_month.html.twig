@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!
+{% endblock %}
+
+{% block body %}
+	<!-- Card Header - Dropdown -->
+	
+			<div class="card-body">
+				<div class="chart-area">
+					<table>
+						Voici les dépenses de ce mois-ci :<br>
+
+						<h5>Salaire</h5>
+
+						{{ income }}
+
+						<h5>Charges fixes</h5>
+						{% for fixedSpending in fixedSpendings %}
+							<ul>
+								<li>{{ fixedSpending.name }} 
+									:
+									{% if fixedSpending.isPaid %}
+									 Dépense payée {{ fixedSpending.amount }} € - Indiquer la dépense comme étant non payée <input class="btn btn-danger isNotpaid" id="{{ fixedSpending.id }}" type="submit">
+									{% else %}
+									{{ fixedSpending.amount }} € Non payée, date prélèvement : {{ fixedSpending.date |date("m/d/Y") }} Indiquer cette dépense comme étant payée <input class="btn btn-primary ispaid" id="{{ fixedSpending.id }}" type="submit">
+									{% endif %} 
+									</li>
+							</ul>
+						{% endfor %}
+						<h5>Charges Variables</h5>
+
+						{% for variableSpending in variableSpendings %}
+							<ul>
+								<li>{{ variableSpending.name }} 
+									:
+									{% if variableSpending.isPaid %}
+									 Dépense payée {{ variableSpending.amount }} € - Indiquer la dépense comme étant non payée <input class="btn btn-danger isNotpaid" id="{{ variableSpending.id }}" type="submit">
+									{% else %}
+									{{ variableSpending.amount }} € Non payée, date prélèvement : {{ variableSpending.date |date("m/d/Y") }} Indiquer cette dépense comme étant payée <input class="btn btn-primary ispaid" id="{{ variableSpending.id }}" type="submit">
+									{% endif %} 
+									</li>
+							</ul>
+						{% endfor %}
+
+						<h5>Paiements en plusieurs fois</h5>
+
+								{% for spendingPaidByInstalment in spendingsPaidByInstalment %}
+							<ul>
+								<li>{{ spendingPaidByInstalment.name }} </li>
+							</ul>
+						{% endfor %}
+
+					</div>
+				</div>
+
+            <script>
+			$(document).ready(function(){
+
+			 // Ajax request which updates the batch remaining quantity
+            $(document).on('click', '.ispaid', function(){
+                // return;
+                var id = $(this).attr('id');
+				var val = true;
+				var content = 'Dépense mise à jour'
+
+                $.ajax({ 
+				type: 'POST',
+                url: '{{ path('spending_set_is_paid') }}',
+                data: {
+                    val: val,
+                    id: parseInt(id)
+                },	
+                success: function (data) {
+                   console.log('ok')
+                },
+                error: function (data) {
+                   console.log('error')
+                }
+                    });
+
+				$(this).parent().html(content);
+
+            });
+
+			 $(document).on('click', '.isNotpaid', function(){
+                // return;
+                var id = $(this).attr('id');
+				var val = 0;
+				var content = 'Dépense mise à jour'
+
+                $.ajax({ 
+				type: 'POST',
+                url: '{{ path('spending_set_is_paid') }}',
+                data: {
+                    val: val,
+                    id: parseInt(id)
+                },	
+                success: function (data) {
+                   console.log('ok')
+                },
+                error: function (data) {
+                   console.log('error')
+                }
+                    });
+
+				$(this).parent().html(content);
+
+            });
+			
+			})
+			
+			</script>
+			{% endblock %}
