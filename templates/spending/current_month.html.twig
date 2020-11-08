@@ -6,76 +6,77 @@
 {% block body %}
 
 <nav class="navbar navbar-expand-sm bg-light">
-<ul class="navbar-nav">
-
- <li class="nav-item">
-  <a class="nav-link tablinks w3-btn" data-toggle="tooltip" title="Renseigner/modifier le salaire">Salaire du mois : {% if not income %} Aucun salaire renseigné {% endif %} {{ income }}</a>
-</li>
-
- <li class="nav-item">
-  <button class="nav-link tablinks w3-button" onclick="openCity(event, 'fixed_expenses')">Charges fixes</button>
-</li>
-
- <li class="nav-item">
-  <button class="nav-link tablinks w3-button" onclick="openCity(event, 'variable_expenses')">Charges variables</button>
- </li>
-
-  <li class="nav-item">
-  <button class="nav-link tablinks w3-button" onclick="openCity(event, 'instalment')">Paiements en plusieurs fois</button>
-  </li>
-
-</ul>
+   <ul class="navbar-nav">
+      <li class="nav-item">
+         <a class="nav-link tablinks w3-btn" data-toggle="tooltip" title="Renseigner/modifier le salaire">Salaire du mois : {% if not income %} Aucun salaire renseigné {% endif %} {{ income }}</a>
+      </li>
+      <li class="nav-item">
+         <button class="nav-link tablinks w3-button" onclick="openCity(event, 'fixed_expenses')">Charges fixes</button>
+      </li>
+      <li class="nav-item">
+         <button class="nav-link tablinks w3-button" onclick="openCity(event, 'variable_expenses')">Charges variables</button>
+      </li>
+      <li class="nav-item">
+         <button class="nav-link tablinks w3-button" onclick="openCity(event, 'instalment')">Paiements en plusieurs fois</button>
+      </li>
+   </ul>
 </nav>
-
-	<!-- Card Header - Dropdown -->
-	<div class="container">
+<!-- Card Header - Dropdown -->
+<div class="d-flex justify-content-between">
 
 <div class="row">
-<div class="col">
 
-<div id="fixed_expenses" class="tabcontent w3-animate-left">
-  <h3>Dépenses fixes</h3>
-  	{% for fixedSpending in fixedSpendings %}
-							<ul>
-								<li>{{ fixedSpending.name }} 
-									:
-									{% if fixedSpending.isPaid %}
-									 Dépense payée {{ fixedSpending.amount }} € - Indiquer la dépense comme étant non payée <button class="btn btn-danger isNotpaid" id="{{ fixedSpending.id }}"><i class="fa fa-times" aria-hidden="true"></i></button>
-									{% else %}
-									{{ fixedSpending.amount }} € Non payée, date prélèvement : {{ fixedSpending.date |date("m/d/Y") }} Indiquer cette dépense comme étant payée <button class="btn btn-primary ispaid" id="{{ fixedSpending.id }}"><i class="fas fa-check"></i></button>
-									{% endif %} 
-									</li>
-							</ul>
-						{% endfor %}
+<div class="col-6">
+
+<div class="text-left ml-2" style="border-right:1px #808080 solid; height:100%;">
+<h3><i class="fas fa-angle-double-right"></i> Récapitulatif des dépenses payées</h3>
+   </div>
 </div>
 
-<div id="variable_expenses" class="tabcontent w3-animate-left" style="display:none">
-  <h3>Dépenses variables</h3>
-  	{% for variableSpending in variableSpendings %}
-							<ul>
-								<li>{{ variableSpending.name }} 
-									:
-									{% if variableSpending.isPaid %}
-									 Dépense payée {{ variableSpending.amount }} € - Indiquer la dépense comme étant non payée <input class="btn btn-danger isNotpaid" id="{{ variableSpending.id }}" type="submit">
-									{% else %}
-									{{ variableSpending.amount }} € Non payée, date prélèvement : {{ variableSpending.date |date("m/d/Y") }} Indiquer cette dépense comme étant payée <button class="btn btn-primary ispaid" id="{{ variableSpending.id }}"><i class="fa fa-times" aria-hidden="true"></i></button>
-									{% endif %} 
-									</li>
-							</ul>
-						{% endfor %}
-</div>
+   <div class="col-6">
 
-<div id="instalment" class="tabcontent w3-animate-left" style="display:none">
-  <h3>Paiements en plusieurs fois</h3>
-								{% for spendingPaidByInstalment in spendingsPaidByInstalment %}
-							<ul>
-								<li>{{ spendingPaidByInstalment.name }} </li>
-							</ul>
-						{% endfor %}
+      <div id="fixed_expenses" class="tabcontent w3-animate-left">
+         <h3><i class="fas fa-angle-double-right"></i> Dépenses fixes</h3>
+         {% for fixedSpending in fixedSpendings %}
+         <ul>
+            <li>{{ fixedSpending.name }} 
+               :
+               {% if fixedSpending.isPaid %}
+               Dépense payée {{ fixedSpending.amount }} € - Indiquer la dépense comme étant non payée <button class="btn btn-danger isNotpaid" id="{{ fixedSpending.id }}"><i class="fa fa-times" aria-hidden="true"></i></button>
+               {% else %}
+               {{ fixedSpending.amount }} € Non payée, date prélèvement : {{ fixedSpending.date |date("m/d/Y") }} Indiquer cette dépense comme étant payée <button class="btn btn-primary ispaid" id="{{ fixedSpending.id }}"><i class="fas fa-check"></i></button>
+               {% endif %} 
+            </li>
+         </ul>
+         {% endfor %}
+      </div>
 
-</div>
 
-</div>
+      <div id="variable_expenses" class="tabcontent w3-animate-left" style="display:none">
+         <h3><i class="fas fa-angle-double-right"></i> Dépenses variables</h3>
+         {% for variableSpending in variableSpendings %}
+         <ul>
+            <li>{{ variableSpending.name }} 
+               :
+               {% if variableSpending.isPaid %}
+               Dépense payée {{ variableSpending.amount }} € - Indiquer la dépense comme étant non payée <input class="btn btn-danger isNotpaid" id="{{ variableSpending.id }}" type="submit">
+               {% else %}
+               {{ variableSpending.amount }} € Non payée, date prélèvement : {{ variableSpending.date |date("m/d/Y") }} Indiquer cette dépense comme étant payée <button class="btn btn-primary ispaid" id="{{ variableSpending.id }}"><i class="fa fa-times" aria-hidden="true"></i></button>
+               {% endif %} 
+            </li>
+         </ul>
+         {% endfor %}
+      </div>
+
+      <div id="instalment" class="tabcontent w3-animate-left" style="display:none">
+         <h3><i class="fas fa-angle-double-right"></i> Paiements en plusieurs fois</h3>
+         {% for spendingPaidByInstalment in spendingsPaidByInstalment %}
+         <ul>
+            <li>{{ spendingPaidByInstalment.name }} - {{ spendingPaidByInstalment.instalmentAmount }}</li>
+         </ul>
+         {% endfor %}
+      </div>
+   </div>
 </div>
 
             <script>
@@ -132,11 +133,8 @@
 
             });
 			
-			})
+			});
 			
-			</script>
-
-			<script>
 function openCity(evt, cityName) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
@@ -151,4 +149,5 @@ function openCity(evt, cityName) {
   evt.currentTarget.className += " active";
 }
 </script>
+
 			{% endblock %}

@@ -5,7 +5,8 @@
 <div class="container">
 
 <div class="row">
-<div class="col">
+<div class="col-4">
+
 {{ form_start(form)}}
 {{ form_row(form.date) }}
 {{ form_row(form.amount) }}
@@ -13,7 +14,7 @@
 {{ form_row(form.is_by_instalment) }}
 
 <div class="isbyinstalment" style="display:none">
-{{ form_row(form.instalment_amount) }}
+{{ form_row(form.nb_instalments) }}
 {{ form_row(form.instalment_ending_date) }}
 </div>
 
@@ -40,5 +41,26 @@
     }
   });
 });
+
+// Set input date to today
+Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+});
+
+document.getElementById('js-datepicker').value = new Date().toDateInputValue();
+
 </script>
+<script>
+
+    $(document).ready(function() {
+        // you may need to change this code if you are not using Bootstrap Datepicker
+        $('.js-datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+    });
+</script>
+
+
 {% endblock %}

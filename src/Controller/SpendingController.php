@@ -8,7 +8,6 @@ use App\Form\IncomeType;
 use App\Form\SpendingType;
 use App\Manager\SpendingManager;
 use App\Service\CalendarService;
-use App\Controller\SpendingController;
 use App\Repository\SpendingRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -75,12 +74,17 @@ class SpendingController extends AbstractController
         $form = $this->createForm(SpendingType::class, $spending);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-   
-            $spending = $form->getData();
-            $date = $spending->getDate()->format('Y-m-d'); ;
-            
-            $spending->setPayDate(new \Datetime($date));
 
+            $spending = $form->getData();
+            $date = $spending->getDate()->format('Y-m-d');
+
+            if($spending->getIsByInstalment())
+             {
+                $instalmentAmount = $spending->getAmount() / $spending->getNbInstalments();
+                $spending->setInstalmentAmount($instalmentAmount);
+             }
+
+            $spending->setPayDate(new \Datetime($date));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($spending);
             $entityManager->flush();

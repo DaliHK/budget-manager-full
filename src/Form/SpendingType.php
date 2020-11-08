@@ -18,9 +18,12 @@ class SpendingType extends AbstractType
     {
         $builder
             ->add('date',  DateType::class, [
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'attr' => ['class' => 'js-datepicker']
             ])
             ->add('amount', MoneyType::class, [
-                'label' => 'Montant'
+                'label' => 'Montant total'
             ])
             ->add('name', TextType::class, [
                 'label' => 'Intitulé'
@@ -33,8 +36,8 @@ class SpendingType extends AbstractType
                 'label' => 'Paiement en plusieurs fois',
                 ]
             )
-            ->add('instalment_amount', MoneyType::class, [
-                'label' => 'Montant de la mensualité',
+            ->add('nb_instalments', MoneyType::class, [
+                'label' => 'Nombre de mensualités',
                 'required' => false
             ])
             ->add('instalment_ending_date', DateType::class, [
@@ -42,12 +45,10 @@ class SpendingType extends AbstractType
             ])
             ->add(
                 'instalment_ending_date',
-                DateType::class,
-                [
+                DateType::class,  [
                     'label' => 'Date de fin du paiement en plusieurs fois',
                     'required' => false
-                ]
-            )
+                ])
             ->add(
                 'is_fixed_cost',
                 CheckboxType::class,
