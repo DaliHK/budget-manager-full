@@ -28,10 +28,12 @@ class SpendingController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
+        /*
         $emConfig = $em->getConfiguration();
         $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
         $emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
         $emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
+        */
 
         $month = '10';
         $income =  $this->getDoctrine()->getRepository(Income::class)->findByPayDate(date('m'));
@@ -75,7 +77,10 @@ class SpendingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
    
             $spending = $form->getData();
-    
+            $date = $spending->getDate()->format('Y-m-d'); ;
+            
+            $spending->setPayDate(new \Datetime($date));
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($spending);
             $entityManager->flush();

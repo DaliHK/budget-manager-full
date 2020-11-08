@@ -67,6 +67,11 @@ class Spending
      */
     private $payDate;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nb_instalments;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -188,6 +193,18 @@ class Spending
     public function setPayDate(\DateTimeInterface $payDate): self
     {
         $this->payDate = $payDate;
+
+        return $this;
+    }
+
+    public function getNbInstalments(): ?int
+    {
+        return $this->nb_instalments;
+    }
+
+    public function setNbInstalments(?int $nb_instalments): self
+    {
+        $this->nb_instalments = $nb_instalments;
 
         return $this;
     }

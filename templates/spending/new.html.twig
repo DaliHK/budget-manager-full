@@ -1,14 +1,44 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-{{ form(form) }}
+
+<div class="container">
+
+<div class="row">
+<div class="col">
+{{ form_start(form)}}
+{{ form_row(form.date) }}
+{{ form_row(form.amount) }}
+{{ form_row(form.name) }}
+{{ form_row(form.is_by_instalment) }}
+
+<div class="isbyinstalment" style="display:none">
+{{ form_row(form.instalment_amount) }}
+{{ form_row(form.instalment_ending_date) }}
+</div>
+
+{{ form_row(form.is_fixed_cost) }}
+{{ form_row(form.saveAndAdd) }}
+
+{{ form_end(form)}}
+
+</div>
+</div>
+</div>
 
 <script>
     $(document).ready(function() {
-        // you may need to change this code if you are not using Bootstrap Datepicker
-        $('.js-datepicker').datepicker({
-            format: 'yyyy-mm-dd'
-        });
-    });
+  
+    $("#spending_is_by_instalment").change(function() {
+    if(this.checked) {
+        //Do stuff
+      $('.isbyinstalment').show("slow");
+    }
+     if(!this.checked) {
+        //Do stuff
+      $('.isbyinstalment').hide("slow");
+    }
+  });
+});
 </script>
 {% endblock %}
