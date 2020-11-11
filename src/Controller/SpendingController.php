@@ -27,38 +27,33 @@ class SpendingController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
-        /*
+        
         $emConfig = $em->getConfiguration();
         $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
         $emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
         $emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
-        */
 
-        $month = '10';
+        $month = date('m');
         $income =  $this->getDoctrine()->getRepository(Income::class)->findByPayDate(date('m'));
 
         $qb = $em->createQueryBuilder()
             ->select('u')
             ->from('App\Entity\Spending', 'u')
-            ->Where('MONTH(u.date) = :month')
-            ->andWhere('u.is_fixed_cost = 1')
-            ->setParameter('month', $month)
+            ->where('u.is_fixed_cost = 1')
         ;
-        $fixedSpendingsOfTheMonth = $qb->getQuery()->getResult();
+        $fixedSpendings = $qb->getQuery()->getResult();
 
         $query = $em->createQueryBuilder()
         ->select('u')
         ->from('App\Entity\Spending', 'u')
-        ->Where('MONTH(u.date) = :month')
-        ->andWhere('u.is_fixed_cost = 0')
-        ->setParameter('month', $month)
+        ->where('u.is_fixed_cost = 0')
     ;
     $variableSpendingsOfTheMonth = $query->getQuery()->getResult();
 
     $findSpendingsPaidByInstalment = $repo->findSpendingsPaidByInstalment();
 
         return $this->render('spending/current_month.html.twig', [
-            'fixedSpendings' => $fixedSpendingsOfTheMonth,
+            'fixedSpendings' => $fixedSpendings,
             'variableSpendings' => $variableSpendingsOfTheMonth,
             'spendingsPaidByInstalment' => $findSpendingsPaidByInstalment,
             'income' => $income
