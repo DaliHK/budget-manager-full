@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!
+{% block title %}<title>Mois en cours</title>
 {% endblock %}
 
 {% block body %}
@@ -29,7 +29,10 @@
 <div class="col-6">
 
 <div class="text-left ml-2" style="border-right:1px #808080 solid; height:100%;">
-<h3><i class="fas fa-angle-double-right"></i> Récapitulatif des dépenses payées</h3>
+<h3><i class="fas fa-angle-double-right"></i> Récapitulatif des dépenses restantes</h3>
+<h5 class="text-danger"> Voir le détail des dépenses sur le tableau ci-contre</h5>
+Montant total :
+
    </div>
 </div>
 
@@ -152,8 +155,11 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">Intitulé</th>
-       <th scope="col">Date de prélèvement</th>
-      <th scope="col">Montant</th>
+      <th scope="col">Date de prélèvement</th>
+      <th scope="col">Montant de la mensualité prélevée</th>
+      <th scope="col">Montant total</th>
+       <th scope="col">Reste à payer</th>
+      <th scope="col">Date de fin</th>
       <th scope="col">Etat</th>
       <th scope="col">Action</th>
     </tr>
@@ -168,19 +174,32 @@
       </td>
 
       <td>
-      {{ spendingPaidByInstalment.payDate | date("m/d/Y") }} €
+      {{ spendingPaidByInstalment.payDate | date("d/m/Y") }} €
       </td>
 
       <td>
      {{ spendingPaidByInstalment.instalmentAmount }}
       </td>
 
+      <td>
+     {{ spendingPaidByInstalment.amount }}
+      </td>
+
+      <td>
+     Reste
+      </td>
+
+        <td>
+     {{ spendingPaidByInstalment.instalmentEndingDate | date("d/m/Y") }}
+      </td>
+
+
 {% if spendingPaidByInstalment.isPaid %}
       <td>
       Payée
       </td>
 
-      <td><button class="btn btn-danger isNotpaid" id="{{ spendingPaidByInstalment.id }}"><i class="fa fa-times" aria-hidden="true" data-toggle="tooltip" title="Indiquer la dépense comme payée"></i></button>
+      <td><button class="btn btn-danger isNotpaid" id="{{ spendingPaidByInstalment.id }}"><i class="fa fa-times" aria-hidden="true" data-toggle="tooltip" title="Indiquer la mensualité comme payée"></i></button>
       </td>
 
  {% else %}
@@ -189,7 +208,7 @@
       </td>
 
       <td>
-      <button class="btn btn-primary isPaid" id="{{ spendingPaidByInstalment.id }}"><i class="fa fa-check" aria-hidden="true" data-toggle="tooltip" title="Indiquer la dépense comme non payée"></i>
+      <button class="btn btn-primary isPaid" id="{{ spendingPaidByInstalment.id }}"><i class="fa fa-check" aria-hidden="true" data-toggle="tooltip" title="Indiquer la mensualité comme non payée"></i>
       </button>
       </td>
 </tr>

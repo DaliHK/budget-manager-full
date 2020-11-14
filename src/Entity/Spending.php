@@ -72,6 +72,11 @@ class Spending
      */
     private $nb_instalments;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $instalment_ispaid;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -205,6 +210,18 @@ class Spending
     public function setNbInstalments(?int $nb_instalments): self
     {
         $this->nb_instalments = $nb_instalments;
+
+        return $this;
+    }
+
+    public function getInstalmentIspaid(): ?bool
+    {
+        return $this->instalment_ispaid;
+    }
+
+    public function setInstalmentIspaid(bool $instalment_ispaid): self
+    {
+        $this->instalment_ispaid = $instalment_ispaid;
 
         return $this;
     }

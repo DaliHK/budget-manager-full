@@ -72,15 +72,24 @@ class SpendingController extends AbstractController
 
             $spending = $form->getData();
             $date = $spending->getDate()->format('Y-m-d');
+            $nbInstalments = $spending->getNbInstalments();
+
+            // We substract 1 to the number of instalments because there is always a first payment
+            $nbInstalments+-1;
 
             if($spending->getIsByInstalment())
              {
                 $instalmentAmount = $spending->getAmount() / $spending->getNbInstalments();
                 $spending->setInstalmentAmount($instalmentAmount);
+
+                // Auto calculate the ending date using the number of instalments of the spending
+                $ending_date = date_modify(new \Datetime,"+".$nbInstalments."Month");
+                $spending->setInstalmentEndingDate($ending_date);
              }
 
             $spending->setPayDate(new \Datetime($date));
             $entityManager = $this->getDoctrine()->getManager();
+
             $entityManager->persist($spending);
             $entityManager->flush();
     

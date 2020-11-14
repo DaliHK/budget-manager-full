@@ -40,15 +40,6 @@ class SpendingType extends AbstractType
                 'label' => 'Nombre de mensualités',
                 'required' => false
             ])
-            ->add('instalment_ending_date', DateType::class, [
-                'label' => 'Date de la dernière mensualité'
-            ])
-            ->add(
-                'instalment_ending_date',
-                DateType::class,  [
-                    'label' => 'Date de fin du paiement en plusieurs fois',
-                    'required' => false
-                ])
             ->add(
                 'is_fixed_cost',
                 CheckboxType::class,
