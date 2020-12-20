@@ -73,7 +73,7 @@ class Spending
     private $nb_instalments;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $instalment_ispaid;
 
